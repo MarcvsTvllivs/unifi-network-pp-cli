@@ -1,0 +1,1428 @@
+{
+  "api_name": "unifi-network",
+  "base_url": "https://192.168.1.1",
+  "description": "UniFi Network controller CLI — devices, clients, WiFi, firewall, routing, VPN, DNS, DPI, stats and events over one static binary with a local SQLite mirror",
+  "mcp_ready": "full",
+  "http_transport": "standard",
+  "mcp": {
+    "endpoint_tools": "hidden",
+    "orchestration": "code"
+  },
+  "auth": {
+    "type": "api_key",
+    "header": "X-API-KEY",
+    "format": "{UNIFI_API_KEY}",
+    "in": "header",
+    "env_vars": [
+      "UNIFI_API_KEY"
+    ],
+    "env_var_specs": [
+      {
+        "name": "UNIFI_API_KEY",
+        "kind": "per_call",
+        "required": true,
+        "sensitive": true,
+        "inferred": true
+      }
+    ]
+  },
+  "required_headers": [],
+  "tools": [
+    {
+      "name": "acl-rules_create",
+      "description": "Create a MAC ACL rule. Provide the rule object via --body-json. Required: name, action.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/acl-rules",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Rule name",
+          "required": true
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "location": "body",
+          "description": "ALLOW | BLOCK",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "acl-rules_delete",
+      "description": "Delete a MAC ACL rule by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/acl-rules/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "ACL rule _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "acl-rules_list",
+      "description": "List MAC ACL rules (Policy Engine) for L2 access control within a VLAN.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/acl-rules",
+      "params": []
+    },
+    {
+      "name": "acl-rules_update",
+      "description": "Update a MAC ACL rule by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/acl-rules/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "ACL rule _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ap-groups_create",
+      "description": "Create an AP group. Required: name. Optional: device_macs.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/apgroups",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "AP group name",
+          "required": true
+        },
+        {
+          "name": "device_macs",
+          "type": "string",
+          "location": "body",
+          "description": "JSON array of AP MAC addresses"
+        }
+      ]
+    },
+    {
+      "name": "ap-groups_delete",
+      "description": "Delete an AP group by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/apgroups/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "AP group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "ap-groups_list",
+      "description": "List AP groups with member APs and WLAN memberships.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/apgroups",
+      "params": []
+    },
+    {
+      "name": "ap-groups_update",
+      "description": "Update an AP group by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/apgroups/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "AP group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "client-groups_create",
+      "description": "Create a client group (members = list of MAC addresses). Required: name. Optional: members, type.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/network-members-group",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Group name",
+          "required": true
+        },
+        {
+          "name": "members",
+          "type": "string",
+          "location": "body",
+          "description": "JSON array of MAC addresses"
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "location": "body",
+          "description": "Group type (default CLIENTS)"
+        }
+      ]
+    },
+    {
+      "name": "client-groups_delete",
+      "description": "Delete a client group by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/network-members-group/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Client group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "client-groups_get",
+      "description": "Get a client group by id. Required: id.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/network-members-group/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Client group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "client-groups_list",
+      "description": "List client groups (MAC member groups used by OON policies and firewall rules).",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/network-members-groups",
+      "params": []
+    },
+    {
+      "name": "client-groups_update",
+      "description": "Update a client group by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/network-members-group/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Client group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "clients_known",
+      "description": "List all known clients in controller history (including offline), with fixed-IP and note settings. Returns array of Client.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/user",
+      "params": []
+    },
+    {
+      "name": "clients_list",
+      "description": "List currently connected clients (wired and wireless) with mac, ip, status, signal and SSID. Returns array of Client.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/sta",
+      "params": []
+    },
+    {
+      "name": "content-filters_delete",
+      "description": "Delete a content filtering profile by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/content-filtering/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Content filter _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "content-filters_list",
+      "description": "List content filtering profiles (category blocking, safe search, allow/block lists). Note: profiles are created in the UI.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/content-filtering",
+      "params": []
+    },
+    {
+      "name": "content-filters_update",
+      "description": "Update a content filtering profile by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/content-filtering/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Content filter _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "devices_channels",
+      "description": "List allowed RF channels for the site's regulatory domain (per band, with DFS and max power).",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/current-channel",
+      "params": []
+    },
+    {
+      "name": "devices_get",
+      "description": "Get one device's full object by MAC (radio/port/outlet tables, system stats, WAN info). Required: mac.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/device/{mac}",
+      "params": [
+        {
+          "name": "mac",
+          "type": "string",
+          "location": "path",
+          "description": "Device MAC address (AA:BB:CC:DD:EE:FF)",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "devices_list",
+      "description": "List adopted devices with mac, name, model, ip, version, uptime, state and uplink. Returns array of Device.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/device",
+      "params": []
+    },
+    {
+      "name": "dns-records_create",
+      "description": "Create a static DNS record. Required: key, value, record_type. Optional: enabled, ttl.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/static-dns",
+      "params": [
+        {
+          "name": "key",
+          "type": "string",
+          "location": "body",
+          "description": "Hostname (e.g. myhost.example.com)",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "location": "body",
+          "description": "Target IP or hostname",
+          "required": true
+        },
+        {
+          "name": "record_type",
+          "type": "string",
+          "location": "body",
+          "description": "A | AAAA | CNAME | MX | TXT | SRV",
+          "required": true
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the record is enabled"
+        },
+        {
+          "name": "ttl",
+          "type": "int",
+          "location": "body",
+          "description": "TTL in seconds (0 = default 300s)"
+        }
+      ]
+    },
+    {
+      "name": "dns-records_delete",
+      "description": "Delete a static DNS record by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/static-dns/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "DNS record _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dns-records_list",
+      "description": "List static DNS records (hostname, value, type, enabled, ttl).",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/static-dns",
+      "params": []
+    },
+    {
+      "name": "dns-records_update",
+      "description": "Update a static DNS record by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/static-dns/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "DNS record _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dpi_applications",
+      "description": "List DPI applications (Integration API; requires UNIFI_API_KEY). Optional: limit (default: 200), offset.",
+      "method": "GET",
+      "path": "/proxy/network/integration/v1/dpi/applications",
+      "params": [
+        {
+          "name": "limit",
+          "type": "int",
+          "location": "query",
+          "description": "Page size"
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "location": "query",
+          "description": "Page offset"
+        }
+      ]
+    },
+    {
+      "name": "dpi_categories",
+      "description": "List DPI application categories (Integration API; requires UNIFI_API_KEY). Optional: limit (default: 200), offset.",
+      "method": "GET",
+      "path": "/proxy/network/integration/v1/dpi/categories",
+      "params": [
+        {
+          "name": "limit",
+          "type": "int",
+          "location": "query",
+          "description": "Page size"
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "location": "query",
+          "description": "Page offset"
+        }
+      ]
+    },
+    {
+      "name": "events_alarms",
+      "description": "List active alarms (security alerts, connectivity issues, firmware warnings). Returns array of Alarm.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/alarm",
+      "params": []
+    },
+    {
+      "name": "events_alarms-archived",
+      "description": "List archived (historical) alarms. Optional: archived (default: true).",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/alarm",
+      "params": [
+        {
+          "name": "archived",
+          "type": "bool",
+          "location": "query",
+          "description": "Include archived alarms"
+        }
+      ]
+    },
+    {
+      "name": "firewall-groups_create",
+      "description": "Create a firewall group (group_type is immutable after creation). Required: name, group_type. Optional: group_members.",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/firewallgroup",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Group name",
+          "required": true
+        },
+        {
+          "name": "group_type",
+          "type": "string",
+          "location": "body",
+          "description": "address-group | ipv6-address-group | port-group",
+          "required": true
+        },
+        {
+          "name": "group_members",
+          "type": "string",
+          "location": "body",
+          "description": "JSON array of members (IPs/CIDRs for address, ports/ranges for port)"
+        }
+      ]
+    },
+    {
+      "name": "firewall-groups_delete",
+      "description": "Delete a firewall group by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/firewallgroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Firewall group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "firewall-groups_get",
+      "description": "Get a firewall group by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/firewallgroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Firewall group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "firewall-groups_list",
+      "description": "List firewall groups (address-group, ipv6-address-group, port-group). Returns array of FirewallGroup.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/firewallgroup",
+      "params": []
+    },
+    {
+      "name": "firewall-groups_update",
+      "description": "Update a firewall group by id (PUT replaces the full object). Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/firewallgroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Firewall group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "firewall-policies_create",
+      "description": "Create a V2 firewall policy. Provide the full policy object via --body-json. Required: name, action. Optional: enabled.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/firewall-policies",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Policy name",
+          "required": true
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "location": "body",
+          "description": "ALLOW | BLOCK | REJECT",
+          "required": true
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the policy is enabled"
+        }
+      ]
+    },
+    {
+      "name": "firewall-policies_delete",
+      "description": "Delete a firewall policy by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/firewall-policies/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Firewall policy _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "firewall-policies_list",
+      "description": "List V2 zone-based firewall policies (zone targeting, action, enabled, index). Returns array of FirewallPolicy.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/firewall-policies",
+      "params": []
+    },
+    {
+      "name": "firewall-policies_update",
+      "description": "Update a firewall policy by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/firewall-policies/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Firewall policy _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "firewall-zones_list",
+      "description": "List firewall zones and the zone matrix.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/firewall/zone-matrix",
+      "params": []
+    },
+    {
+      "name": "networks_create",
+      "description": "Create a network/VLAN. Pass the full network object as --body-json or individual fields. Required: name. Optional: purpose, vlan_enabled, vlan (plus 5 more).",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/networkconf",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Network name",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "location": "body",
+          "description": "corporate | guest | vlan-only | wan"
+        },
+        {
+          "name": "vlan_enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Enable VLAN tagging"
+        },
+        {
+          "name": "vlan",
+          "type": "string",
+          "location": "body",
+          "description": "VLAN id"
+        },
+        {
+          "name": "ip_subnet",
+          "type": "string",
+          "location": "body",
+          "description": "Gateway/subnet in CIDR (e.g. 192.168.20.1/24)"
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the network is enabled"
+        },
+        {
+          "name": "dhcpd_enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Enable the DHCP server"
+        },
+        {
+          "name": "dhcpd_start",
+          "type": "string",
+          "location": "body",
+          "description": "DHCP pool start IP"
+        },
+        {
+          "name": "dhcpd_stop",
+          "type": "string",
+          "location": "body",
+          "description": "DHCP pool end IP"
+        }
+      ]
+    },
+    {
+      "name": "networks_delete",
+      "description": "Delete a network by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/networkconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Network _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "networks_get",
+      "description": "Get a network's full configuration by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/networkconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Network _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "networks_list",
+      "description": "List configured networks (LAN/WAN/VLAN) with name, purpose, subnet, VLAN id and DHCP settings. Returns array of Network.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/networkconf",
+      "params": []
+    },
+    {
+      "name": "networks_update",
+      "description": "Update a network by id (PUT replaces the resource; fetch+merge with 'get' first). Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/networkconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Network _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "oon-policies_create",
+      "description": "Create an OON policy. Provide the full nested policy object via --body-json. Required: name. Optional: enabled.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/object-oriented-network-config",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Policy name",
+          "required": true
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the policy is enabled"
+        }
+      ]
+    },
+    {
+      "name": "oon-policies_delete",
+      "description": "Delete an OON policy by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/object-oriented-network-config/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "OON policy _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "oon-policies_list",
+      "description": "List OON policies (internet access schedules, app blocking, QoS, policy routing).",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/object-oriented-network-configs",
+      "params": []
+    },
+    {
+      "name": "oon-policies_update",
+      "description": "Update an OON policy by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/object-oriented-network-config/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "OON policy _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-forwards_create",
+      "description": "Create a port forwarding rule. Required: name, fwd, dst_port, fwd_port. Optional: proto, src, enabled.",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/portforward",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Rule name",
+          "required": true
+        },
+        {
+          "name": "fwd",
+          "type": "string",
+          "location": "body",
+          "description": "Internal (destination) IP to forward to",
+          "required": true
+        },
+        {
+          "name": "dst_port",
+          "type": "string",
+          "location": "body",
+          "description": "External (WAN) port or range",
+          "required": true
+        },
+        {
+          "name": "fwd_port",
+          "type": "string",
+          "location": "body",
+          "description": "Internal port or range",
+          "required": true
+        },
+        {
+          "name": "proto",
+          "type": "string",
+          "location": "body",
+          "description": "tcp | udp | tcp_udp"
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "location": "body",
+          "description": "Source restriction (any or CIDR)"
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the rule is enabled"
+        }
+      ]
+    },
+    {
+      "name": "port-forwards_delete",
+      "description": "Delete a port forwarding rule by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/portforward/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port forward _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-forwards_get",
+      "description": "Get a port forwarding rule by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/portforward/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port forward _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-forwards_list",
+      "description": "List port forwarding rules. Returns array of PortForward.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/portforward",
+      "params": []
+    },
+    {
+      "name": "port-forwards_update",
+      "description": "Update a port forwarding rule by id. Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/portforward/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port forward _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-profiles_create",
+      "description": "Create a port profile (forward: native | all | customize | disabled). Required: name, forward. Optional: native_networkconf_id, poe_mode.",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/portconf",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Profile name",
+          "required": true
+        },
+        {
+          "name": "forward",
+          "type": "string",
+          "location": "body",
+          "description": "native (access) | all (trunk) | customize | disabled",
+          "required": true
+        },
+        {
+          "name": "native_networkconf_id",
+          "type": "string",
+          "location": "body",
+          "description": "Native VLAN/network id"
+        },
+        {
+          "name": "poe_mode",
+          "type": "string",
+          "location": "body",
+          "description": "auto | pasv24 | passthrough | off"
+        }
+      ]
+    },
+    {
+      "name": "port-profiles_delete",
+      "description": "Delete a port profile by id (system profiles cannot be deleted). Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/portconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port profile _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-profiles_get",
+      "description": "Get a port profile by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/portconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port profile _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "port-profiles_list",
+      "description": "List port profiles (VLAN, isolation, PoE, STP, 802.1X, storm control). Returns array of PortProfile.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/portconf",
+      "params": []
+    },
+    {
+      "name": "port-profiles_update",
+      "description": "Update a port profile by id (system profiles with attr_no_edit cannot be modified). Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/portconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Port profile _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "qos-rules_create",
+      "description": "Create a QoS rule. Provide the rule object via --body-json. Required: name. Optional: enabled.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/qos-rules",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "QoS rule name",
+          "required": true
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the rule is enabled"
+        }
+      ]
+    },
+    {
+      "name": "qos-rules_delete",
+      "description": "Delete a QoS rule by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/qos-rules/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "QoS rule _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "qos-rules_list",
+      "description": "List QoS rules for the current site.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/qos-rules",
+      "params": []
+    },
+    {
+      "name": "qos-rules_update",
+      "description": "Update a QoS rule by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/qos-rules/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "QoS rule _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "routes_active",
+      "description": "List the active routing table on the gateway (user-defined and system routes; may be empty on some firmware).",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/routing",
+      "params": []
+    },
+    {
+      "name": "routes_create",
+      "description": "Create a static route (destination CIDR + next-hop IP). Required: name, static-route_network, static-route_nexthop. Optional: static-route_distance, enabled.",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/routing",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Route name",
+          "required": true
+        },
+        {
+          "name": "static-route_network",
+          "type": "string",
+          "location": "body",
+          "description": "Destination network in CIDR (e.g. 10.0.0.0/24)",
+          "required": true
+        },
+        {
+          "name": "static-route_nexthop",
+          "type": "string",
+          "location": "body",
+          "description": "Next-hop IP address",
+          "required": true
+        },
+        {
+          "name": "static-route_distance",
+          "type": "int",
+          "location": "body",
+          "description": "Administrative distance"
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the route is enabled"
+        }
+      ]
+    },
+    {
+      "name": "routes_delete",
+      "description": "Delete a static route by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/routing/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Route _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "routes_get",
+      "description": "Get a static route by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/routing/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Route _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "routes_list",
+      "description": "List user-defined static routes (name, destination, next-hop, status). Returns array of Route.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/routing",
+      "params": []
+    },
+    {
+      "name": "routes_update",
+      "description": "Update a static route by id. Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/routing/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Route _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "stats_dashboard",
+      "description": "Pre-aggregated site dashboard (health, device/client counts, ISP status). Optional: history-seconds.",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/aggregated-dashboard",
+      "params": [
+        {
+          "name": "history-seconds",
+          "wire_name": "historySeconds",
+          "type": "int",
+          "location": "query",
+          "description": "Seconds of history to include"
+        }
+      ]
+    },
+    {
+      "name": "stats_dpi",
+      "description": "Deep Packet Inspection stats (applications and categories) for the site.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/dpi",
+      "params": []
+    },
+    {
+      "name": "system_health",
+      "description": "Per-subsystem health for WAN, LAN, WLAN and VPN with device and user counts.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/health",
+      "params": []
+    },
+    {
+      "name": "system_info",
+      "description": "Controller version, uptime, hostname, CPU/memory and update availability.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/sysinfo",
+      "params": []
+    },
+    {
+      "name": "system_settings",
+      "description": "Get a settings section (e.g. mgmt, snmp, super_mgmt, guest_access, country). Required: section.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/get/setting/{section}",
+      "params": [
+        {
+          "name": "section",
+          "type": "string",
+          "location": "path",
+          "description": "Settings section key (e.g. snmp, mgmt, super_mgmt)",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "system_sites",
+      "description": "List all sites visible to the authenticated account (with their site keys).",
+      "method": "GET",
+      "path": "/api/self/sites",
+      "params": []
+    },
+    {
+      "name": "system_status",
+      "description": "Controller status (server version, up flag).",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/status",
+      "params": []
+    },
+    {
+      "name": "traffic-routes_create",
+      "description": "Create a traffic route. Provide the route object via --body-json. Required: name. Optional: interface.",
+      "method": "POST",
+      "path": "/v2/api/site/__SITE__/trafficroutes",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Traffic route name",
+          "required": true
+        },
+        {
+          "name": "interface",
+          "type": "string",
+          "location": "body",
+          "description": "Target interface (e.g. WAN2 or a VPN client id)"
+        }
+      ]
+    },
+    {
+      "name": "traffic-routes_delete",
+      "description": "Delete a traffic route by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/v2/api/site/__SITE__/trafficroutes/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Traffic route _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "traffic-routes_list",
+      "description": "List traffic routes (policy-based routing by domain/IP/region/device, often for VPN).",
+      "method": "GET",
+      "path": "/v2/api/site/__SITE__/trafficroutes",
+      "params": []
+    },
+    {
+      "name": "traffic-routes_update",
+      "description": "Update a traffic route by id. Required: id.",
+      "method": "PUT",
+      "path": "/v2/api/site/__SITE__/trafficroutes/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "Traffic route _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "usergroups_create",
+      "description": "Create a user group (bandwidth profile). Use -1 for unlimited. Required: name. Optional: qos_rate_max_down, qos_rate_max_up.",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/usergroup",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "Group name",
+          "required": true
+        },
+        {
+          "name": "qos_rate_max_down",
+          "type": "int",
+          "location": "body",
+          "description": "Download cap in Kbps (-1 = unlimited)"
+        },
+        {
+          "name": "qos_rate_max_up",
+          "type": "int",
+          "location": "body",
+          "description": "Upload cap in Kbps (-1 = unlimited)"
+        }
+      ]
+    },
+    {
+      "name": "usergroups_delete",
+      "description": "Delete a user group by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/usergroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "User group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "usergroups_get",
+      "description": "Get a user group by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/usergroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "User group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "usergroups_list",
+      "description": "List user groups (bandwidth profiles) with up/down speed caps in Kbps. Returns array of UserGroup.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/usergroup",
+      "params": []
+    },
+    {
+      "name": "usergroups_update",
+      "description": "Update a user group by id. Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/usergroup/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "User group _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "vouchers_list",
+      "description": "List hotspot vouchers (codes, expiry, usage quota, bandwidth limits). Returns array of Voucher.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/stat/voucher",
+      "params": []
+    },
+    {
+      "name": "wlans_create",
+      "description": "Create a WLAN/SSID. Required: name. Optional: security, x_passphrase, enabled (plus 2 more).",
+      "method": "POST",
+      "path": "/api/s/__SITE__/rest/wlanconf",
+      "params": [
+        {
+          "name": "name",
+          "type": "string",
+          "location": "body",
+          "description": "SSID name",
+          "required": true
+        },
+        {
+          "name": "security",
+          "type": "string",
+          "location": "body",
+          "description": "open | wpapsk | wpa2-psk | wpa3"
+        },
+        {
+          "name": "x_passphrase",
+          "type": "string",
+          "location": "body",
+          "description": "WPA passphrase (required for psk security)"
+        },
+        {
+          "name": "enabled",
+          "type": "bool",
+          "location": "body",
+          "description": "Whether the SSID is broadcast"
+        },
+        {
+          "name": "networkconf_id",
+          "type": "string",
+          "location": "body",
+          "description": "Network/VLAN id this SSID is bound to"
+        },
+        {
+          "name": "usergroup_id",
+          "type": "string",
+          "location": "body",
+          "description": "User group (bandwidth profile) id"
+        }
+      ]
+    },
+    {
+      "name": "wlans_delete",
+      "description": "Delete a WLAN/SSID by id. Required: id. Destructive.",
+      "method": "DELETE",
+      "path": "/api/s/__SITE__/rest/wlanconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "WLAN _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "wlans_get",
+      "description": "Get a WLAN's full configuration by id. Required: id.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/wlanconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "WLAN _id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "wlans_list",
+      "description": "List configured WLANs (SSIDs) with security, band, enabled state and network binding. Returns array of Wlan.",
+      "method": "GET",
+      "path": "/api/s/__SITE__/rest/wlanconf",
+      "params": []
+    },
+    {
+      "name": "wlans_update",
+      "description": "Update a WLAN by id (PUT replaces; fetch+merge with 'get' first). Required: id.",
+      "method": "PUT",
+      "path": "/api/s/__SITE__/rest/wlanconf/{id}",
+      "params": [
+        {
+          "name": "id",
+          "type": "string",
+          "location": "path",
+          "description": "WLAN _id",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

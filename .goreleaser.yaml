@@ -1,0 +1,51 @@
+version: 2
+project_name: unifi-network-pp-cli
+changelog:
+  disable: true
+builds:
+  - id: unifi-network-pp-cli
+    main: ./cmd/unifi-network-pp-cli
+    binary: unifi-network-pp-cli
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X unifi-network-pp-cli/internal/cli.version={{ .Version }}
+    targets:
+      - darwin_amd64
+      - darwin_arm64
+      - linux_amd64
+      - linux_arm64
+      - windows_amd64
+      - windows_arm64
+  - id: unifi-network-pp-mcp
+    main: ./cmd/unifi-network-pp-mcp
+    binary: unifi-network-pp-mcp
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w
+    targets:
+      - darwin_amd64
+      - darwin_arm64
+      - linux_amd64
+      - linux_arm64
+      - windows_amd64
+      - windows_arm64
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+checksum:
+  name_template: checksums.txt
+brews:
+  - name: unifi-network-pp-cli
+    repository:
+      owner: marcvstvllivs
+      name: homebrew-tap
+    homepage: "https://github.com/marcvstvllivs/unifi-network-pp-cli"
+    description: "Every UniFi Network controller operation as a single static Go binary"
+    install: |
+      bin.install "unifi-network-pp-cli"
+      bin.install "unifi-network-pp-mcp"

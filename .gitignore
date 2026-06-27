@@ -1,0 +1,29 @@
+# Compiled binary
+/unifi-network-pp-cli
+
+# Build / release artifacts
+/build/
+
+# Local SQLite store and HTTP cache (runtime data)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+.cache/
+
+# Verification run artifacts
+dogfood-results.json
+workflow-verify-report.json
+
+# OS cruft
+.DS_Store
+
+# Release bundles
+*.zip
+
+# Internal Printing Press metadata (not for the public repo)
+.manuscripts/
+.printing-press.json
+.printing-press-pii-polish.json
+.printing-press-tools-polish.json
